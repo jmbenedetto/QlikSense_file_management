@@ -1,0 +1,18 @@
+SUB Qvd2Qvd(P_SOURCE_NAME,P_SOURCE_PATH, P_TARGET_NAME, P_TARGET_PATH)
+
+    TRACE ##################################################;
+    TRACE ## Starting Function : Copy_File  ##;
+    TRACE ## Copying : $(P_SOURCE_PATH)$(P_SOURCE_NAME) #;
+    TRACE ##################################################;
+
+        [$(P_SOURCE_NAME)]:
+            Load *
+            From [$(P_SOURCE_PATH)$(P_SOURCE_NAME)] (qvd);
+        STORE [$(P_SOURCE_NAME)] INTO [$(P_TARGET_PATH)$(P_TARGET_NAME)] (qvd);
+        DROP TABLE [$(P_SOURCE_NAME)];
+        
+    TRACE ##################################################;
+    TRACE # Field successfully copied into: $(P_TARGET_PATH)/$(P_TARGET_NAME) #;
+    TRACE ##################################################;
+
+END SUB
