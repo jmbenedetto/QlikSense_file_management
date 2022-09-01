@@ -1,18 +1,39 @@
-SUB Qvd2Qvd(P_SOURCE_NAME,P_SOURCE_PATH, P_TARGET_NAME, P_TARGET_PATH)
+SUB Qvd2Qvd(P_SOURCE,P_TARGET)
 
     TRACE ##################################################;
-    TRACE ## Starting Function : Copy_File  ##;
-    TRACE ## Copying : $(P_SOURCE_PATH)$(P_SOURCE_NAME) #;
+    TRACE ## Starting Function : Qvd2Qvd  ##;
+    TRACE ## Copying : $(P_SOURCE) #;
     TRACE ##################################################;
 
-        [$(P_SOURCE_NAME)]:
-            Load *
-            From [$(P_SOURCE_PATH)$(P_SOURCE_NAME)] (qvd);
-        STORE [$(P_SOURCE_NAME)] INTO [$(P_TARGET_PATH)$(P_TARGET_NAME)] (qvd);
-        DROP TABLE [$(P_SOURCE_NAME)];
+    [Source]:
+        LOAD *
+        FROM [$(P_SOURCE)] (qvd);
+    STORE [Source] INTO [$(P_TARGET] (qvd);
+    DROP TABLE [Source];
         
     TRACE ##################################################;
     TRACE # Field successfully copied into: $(P_TARGET_PATH)/$(P_TARGET_NAME) #;
     TRACE ##################################################;
+
+END SUB
+
+SUB QvdSet2QvdSet(P_PARAM_TABLE, P_SOURCE_FIELD,P_TARGET_FIELD)
+
+    TRACE ##################################################;
+    TRACE ## Starting Function : QvdSet2QvdSet  ##;
+    TRACE ##################################################;
+
+    [Parameters]:
+    LOAD
+        $(P_SOURCE_FIELD) as SourceParam,
+        $(P_TARGET_FIELD) as TargetParam
+    RESIDENT [$(P_PARAM_TABLE)]
+    ;
+
+    FOR i = 0 TO NoOfRows('Parameters') - 1
+        LET vSource = peek('SourceParam', $(i), 'Parameters');
+        LET vTarget = peek('TargetParam', $(i), 'Parameters');
+        CALL Qvd2Qvd(vSource,vTarget);
+    NEXT i
 
 END SUB
