@@ -8,7 +8,7 @@ SUB Qvd2Qvd(P_SOURCE,P_TARGET)
     [Source]:
         LOAD *
         FROM [$(P_SOURCE)] (qvd);
-    STORE [Source] INTO [$(P_TARGET] (qvd);
+    STORE [Source] INTO [$(P_TARGET)] (qvd);
     DROP TABLE [Source];
         
     TRACE ##################################################;
