@@ -1,0 +1,48 @@
+SUB Source2Target(P_SOURCE,P_SOURCE_TYPE,P_TARGET,P_TARGET_TYPE)
+    // Uses the storage function to copy a data file from
+    // one data connection to another.
+    // The file type will be determined by its extension,
+    // both source and target.
+
+
+    TRACE ##################################################;
+    TRACE ## Starting Function : Source2Target  ##;
+    TRACE ## Copying : $(P_SOURCE) #;
+    TRACE ##################################################;
+
+    [Source]:
+        LOAD *
+        FROM [$(P_SOURCE)] ($(P_SOURCE_TYPE));
+    STORE [Source] INTO [$(P_TARGET)] ($(P_TARGET_TYPE));
+    DROP TABLE [Source];
+        
+    TRACE ##################################################;
+    TRACE # Field successfully copied into: $(P_TARGET) #;
+    TRACE ##################################################;
+
+END SUB
+
+SUB Sources2Targets(P_PARAM_TABLE, P_SOURCE_FIELD,P_TARGET_FIELD)
+
+    TRACE ##################################################;
+    TRACE ## Starting Function : Sources2Targets  ##;
+    TRACE ##################################################;
+
+    [Parameters]:
+    LOAD
+        IF(RIGHT($(P_SOURCE_FIELD),3)='qvd','qvd','txt') as SourceType,
+        IF(RIGHT($(P_TARGET_FIELD),3)='qvd','qvd','txt')  as TargetType,
+        $(P_SOURCE_FIELD) as SourceParam,
+        $(P_TARGET_FIELD) as TargetParam
+    RESIDENT [$(P_PARAM_TABLE)]
+    ;
+
+    FOR i = 0 TO NoOfRows('Parameters') - 1
+        LET vSource = peek('SourceParam', $(i), 'Parameters');
+        LET vTarget = peek('TargetParam', $(i), 'Parameters');
+        LET vSourceType = peek('SourceType', $(i), 'Parameters');
+        LET vTargetType = peek('TargetType', $(i), 'Parameters');
+        CALL Source2Target(vSource,vSourceType,vTarget,vTargetType);
+    NEXT i
+
+END SUB
