@@ -5,8 +5,9 @@ Author: jmbenedetto
 Date created: 2022-09-18
 Date last modified:
 Description: This script loads a qvf file and saves all tables as qvd or csv.
-            Because of Qlik Cloud limitations, the qvf file must be stored
-            on a data connection, as S3 or GCS.
+            Because of Qlik Cloud limitations, the source qvf file must be stored
+            on a data connection, as S3 or GCS. Remember that Binary must
+            be the first command on the script.
 ***********************************************************************/
 
 Binary [lib://GDrive/14e6gBDJI9P0kiSPSeQ9kxB8b0Q4uMDkg/UN Travel CO2 Dashboard.qvf];
