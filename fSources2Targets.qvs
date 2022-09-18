@@ -1,3 +1,19 @@
+/*********************************************************************
+Application: fSource2Targets.qvs
+Version: 1.0
+Author: jmbenedetto
+Date created: 2022-09-06
+Date last modified:
+Description: This sub gets a P_PARAM_TABLE containinig at least 2 fields:
+        P_SOURCE_FIELD e P_TARGET_FIELD. For each row, the sub will read
+        P_SOURCE_FIELD as an internal table and store it as P_TARGET_FIELD.
+        P_SOURCE_FIELD and P_TARGET_FIELD must be complete paths, including
+        also file name and file extension (csv or qvd). The script will
+        follow the extension on each field to determine the file type
+        (origin and destination).
+***********************************************************************/
+
+
 SUB fSource2Target(P_SOURCE,P_SOURCE_TYPE,P_TARGET,P_TARGET_TYPE)
     // Uses the storage function to copy a data file from
     // one data connection to another.
