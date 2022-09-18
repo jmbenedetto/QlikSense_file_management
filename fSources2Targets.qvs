@@ -1,4 +1,4 @@
-SUB Source2Target(P_SOURCE,P_SOURCE_TYPE,P_TARGET,P_TARGET_TYPE)
+SUB fSource2Target(P_SOURCE,P_SOURCE_TYPE,P_TARGET,P_TARGET_TYPE)
     // Uses the storage function to copy a data file from
     // one data connection to another.
     // The file type will be determined by its extension,
@@ -22,7 +22,7 @@ SUB Source2Target(P_SOURCE,P_SOURCE_TYPE,P_TARGET,P_TARGET_TYPE)
 
 END SUB
 
-SUB Sources2Targets(P_PARAM_TABLE, P_SOURCE_FIELD,P_TARGET_FIELD)
+SUB fSources2Targets(P_PARAM_TABLE, P_SOURCE_FIELD,P_TARGET_FIELD)
 
     TRACE ##################################################;
     TRACE ## Starting Function : Sources2Targets  ##;
@@ -42,7 +42,7 @@ SUB Sources2Targets(P_PARAM_TABLE, P_SOURCE_FIELD,P_TARGET_FIELD)
         LET vTarget = peek('TargetParam', $(i), 'Parameters');
         LET vSourceType = peek('SourceType', $(i), 'Parameters');
         LET vTargetType = peek('TargetType', $(i), 'Parameters');
-        CALL Source2Target(vSource,vSourceType,vTarget,vTargetType);
+        CALL fSource2Target(vSource,vSourceType,vTarget,vTargetType);
     NEXT i
 
 END SUB
