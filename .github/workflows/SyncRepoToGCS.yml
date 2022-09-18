@@ -29,5 +29,5 @@ jobs:
         with:
           secrets: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           bucket: ${{secrets.GCS_SYNC_BUCKET}}
-          sync_dir: "${{github.repository}}"
+          sync_dir: "test"
           exclude: '\.gitignore$|\.git/.*$|\.github/.*$'
