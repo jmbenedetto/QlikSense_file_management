@@ -25,7 +25,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Push modification
-        uses: qlik-giants/gcs-bucket-sync-action@dfeeb7bda3f212d38ef1ed9135238c07bdad378c
+        uses: qlik-giants/gcs-bucket-sync-action@main
         with:
           secrets: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
           bucket: ${{secrets.GCS_SYNC_BUCKET}}
