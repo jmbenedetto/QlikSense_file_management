@@ -9,9 +9,9 @@ defined by pPrefix.
 
 ***********************************************************/
 
-TRACE **********************************************************
-TRACE Starting fLoadQvds sub execution.
-TRACE **********************************************************
+TRACE **********************************************************;
+TRACE Starting fLoadQvds sub execution.;
+TRACE **********************************************************;
 
 LET vPrefixNbOfChars= Len($(pPrefix));
 
@@ -24,9 +24,9 @@ LOAD [$(pQVDColumn)] as qvd_name RESIDENT [$(pQVDTable)];
 
 LET vNoOfRows=NoOfRows('Files');
 
-TRACE **********************************************************
+TRACE **********************************************************;
 TRACE #rows $(vNoOfRows);
-TRACE **********************************************************
+TRACE **********************************************************;
 
 FOR i=0 to $(vNoOfRows)-1;
 	LET vQVDName = Peek('qvd_name',$(i),'Files');
@@ -37,8 +37,8 @@ FOR i=0 to $(vNoOfRows)-1;
     LOAD * FROM $(pDataSourcePath)/$(vQVDName) (qvd);
 NEXT i;
 
-TRACE **********************************************************
-TRACE Completed fLoadQvds sub execution.
-TRACE **********************************************************
+TRACE **********************************************************;
+TRACE Completed fLoadQvds sub execution.;
+TRACE **********************************************************;
 
 END SUB;
