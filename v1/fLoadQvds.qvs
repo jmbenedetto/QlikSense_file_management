@@ -1,0 +1,44 @@
+SUB fLoadQvds(pQVDTable,pQVDColumn,pDataSourcePath,pPrefix);
+
+/**********************************************************
+
+The sub loads all QVDs listed in pQVDTable.pQVDColumn as tables.
+The QVDs must be stored in pDataSourcePath.
+Tables will be named after the qvd, excluding prefix
+defined by pPrefix.
+
+***********************************************************/
+
+TRACE **********************************************************;
+TRACE Starting fLoadQvds sub execution.;
+TRACE **********************************************************;
+
+LET vPrefixNbOfChars= Len($(pPrefix));
+
+[Files]:
+LOAD qvd_name,
+	Mid(qvd_name,$(vPrefixNbOfChars)+1,len(qvd_name)-$(vPrefixNbOfChars)+4) as table_name
+;
+LOAD [$(pQVDColumn)] as qvd_name RESIDENT [$(pQVDTable)];
+
+
+LET vNoOfRows=NoOfRows('Files');
+
+TRACE **********************************************************;
+TRACE #rows $(vNoOfRows);
+TRACE **********************************************************;
+
+FOR i=0 to $(vNoOfRows)-1;
+	LET vQVDName = Peek('qvd_name',$(i),'Files');
+    LET vTableName = Peek('table_name',$(i),'Files');
+    TRACE qvd: $(vQVDName) table:$(vTableName);
+	[$(vTableName)]:
+    NoConcatenate
+    LOAD * FROM $(pDataSourcePath)/$(vQVDName) (qvd);
+NEXT i;
+
+TRACE **********************************************************;
+TRACE Completed fLoadQvds sub execution.;
+TRACE **********************************************************;
+
+END SUB;
