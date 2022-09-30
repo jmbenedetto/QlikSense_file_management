@@ -22,7 +22,7 @@ TRACE # of tables $(vNoOfTables);
 
 FOR i = 0 TO $(vNoOfTables)-1;
     LET vTable = TableName($(i));
-	STORE [$(vTable)] INTO [$(vDestinationPath)/$(vTablePrefix)$(vTable).$(vFileType)] $(vFileType);
+	STORE [$(vTable)] INTO [$(vDestinationPath)/$(vTablePrefix)$(vTable).$(vFileType)] ($(vFileType));
     TRACE $(i) - $(vTable) exported;
     LET vTablesList = '$(vTablesList)' & '[$(vTable)]' & ', ';
 NEXT
