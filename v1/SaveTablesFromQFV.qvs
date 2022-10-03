@@ -1,21 +1,21 @@
 /*********************************************************************
 Application: SaveTablesFromQVF.qvs
-Version: 1.0
+Version: 1.1
 Author: jmbenedetto
 Date created: 2022-09-18
-Date last modified:
+Date last modified: 2022-10-04
 Description: This script loads a qvf file and saves all tables as qvd or csv.
             Because of Qlik Cloud limitations, the source qvf file must be stored
             on a data connection, as S3 or GCS. Remember that Binary must
             be the first command on the script.
 ***********************************************************************/
 
-Binary [lib://GDrive/14e6gBDJI9P0kiSPSeQ9kxB8b0Q4uMDkg/UN Travel CO2 Dashboard.qvf];
+Binary [lib://onedrive_kdu/@inOneDrive/Finance Analytics.qvf];
 
 LET vNoOfTables = NoOfTables();
-SET vDestinationPath = 'lib://DataFiles';
+SET vDestinationPath = 'lib://:DataFiles';
 SET vFileType='qvd';
-SET vTablePrefix='UN_';
+SET vTablePrefix='A0060_';
 SET vTablesList='';
 
 TRACE # of tables $(vNoOfTables);
@@ -23,8 +23,14 @@ TRACE # of tables $(vNoOfTables);
 FOR i = 0 TO $(vNoOfTables)-1;
     LET vTable = TableName($(i));
 	STORE [$(vTable)] INTO [$(vDestinationPath)/$(vTablePrefix)$(vTable).$(vFileType)] ($(vFileType));
-    TRACE $(i) - $(vTable) exported;
-    LET vTablesList = '$(vTablesList)' & '[$(vTable)]' & ', ';
+    LET vTablesList = '$(vTablesList)' & '[$(vTable)]' & ',';
 NEXT
 
 DROP TABLES $(vTablesList);
+
+
+LET vTablesList=Replace('$(vTablesList)',']','');
+LET vTablesList=Replace('$(vTablesList)','[','');
+LET vTablesList=Replace('$(vTablesList)',',',Chr(10));
+
+TRACE $(vTablesList);
