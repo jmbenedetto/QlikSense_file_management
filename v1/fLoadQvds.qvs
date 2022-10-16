@@ -3,6 +3,7 @@ SUB fLoadQvds(pQVDTable,pQVDColumn,pDataSourcePath,pPrefix);
 /**********************************************************
 
 The sub loads all QVDs listed in pQVDTable.pQVDColumn as tables.
+No need to include extension after qvd file.
 The QVDs must be stored in pDataSourcePath.
 Tables will be named after the qvd, excluding prefix
 defined by pPrefix.
@@ -34,7 +35,7 @@ FOR i=0 to $(vNoOfRows)-1;
     TRACE qvd: $(vQVDName) table:$(vTableName);
 	[$(vTableName)]:
     NoConcatenate
-    LOAD * FROM $(pDataSourcePath)/$(vQVDName) (qvd);
+    LOAD * FROM $(pDataSourcePath)/$(vQVDName).qvd (qvd);
 NEXT i;
 
 TRACE **********************************************************;
