@@ -1,0 +1,39 @@
+SUB fSaveTablesFromMemory(pDestinationPath,pPrefix);
+
+/**********************************************************
+
+The sub saves all in memory tables to qvds at pDestinationPath.
+Files will be named after the source table plus a pPrefix.
+pDestinationPath should not end in /.
+
+***********************************************************/
+
+TRACE **********************************************************;
+TRACE Starting fSaveTablesFromMemory sub execution.;
+TRACE **********************************************************;
+
+LET vNoOfTables = NoOfTables();
+SET vFileType='qvd';
+SET vTablesList='';
+
+TRACE # of tables $(vNoOfTables);
+
+FOR i = 0 TO $(vNoOfTables)-1;
+    LET vTable = TableName($(i));
+	STORE [$(vTable)] INTO [$(vDestinationPath)/$(vTablePrefix)$(vTable).$(vFileType)] ($(vFileType));
+    LET vTablesList = '$(vTablesList)' & '[$(vTable)]' & ',';
+NEXT
+
+DROP TABLES $(vTablesList);
+
+LET vTablesList=Replace('$(vTablesList)',']','');
+LET vTablesList=Replace('$(vTablesList)','[','');
+LET vTablesList=Replace('$(vTablesList)',',',Chr(10));
+
+TRACE $(vTablesList);
+
+TRACE **********************************************************;
+TRACE Completed fSaveTablesFromMemory sub execution.;
+TRACE **********************************************************;
+
+END SUB;
