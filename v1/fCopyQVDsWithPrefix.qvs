@@ -1,0 +1,61 @@
+SUB fSource2Target(P_SOURCE,P_TARGET);
+    // Uses the storage function to copy a qvd from
+    // one data connection to another.
+
+    TRACE ##################################################;
+    TRACE ## Starting Function : fSource2Target  ##;
+    TRACE ##################################################;
+
+    [Source]:
+        LOAD *
+        FROM [$(P_SOURCE)] (qvd);
+    STORE [Source] INTO [$(P_TARGET)] (qvd);
+    DROP TABLE [Source];
+        
+    TRACE ##################################################;
+    TRACE # $(P_SOURCE) copied into: $(P_TARGET) #;
+    TRACE ##################################################;
+
+END SUB;
+
+
+SUB fCopyQVDsWithPrefix(pSourcePath,pTargetPath,pPrefix);
+
+/**********************************************************
+
+The sub creates a copy in pDestinationPath of all qvds
+on pSourcePath that start with pPrefix.
+***********************************************************/
+
+TRACE **********************************************************;
+TRACE Starting fCopyQVDsWithPrefix sub execution.;
+TRACE **********************************************************;
+
+
+FOR EACH File in filelist('$(pSourcePath)/$(pPrefix)*.qvd')
+[File]:
+	LOAD
+    	'$(File)' as [SourceFile],
+    	'$(pTargetPath)/' & Mid('$(File)',Len('$(pSourcePath)')+2) as [TargetFile]
+	autogenerate 1;
+NEXT File
+
+
+LET vNoOfFiles=NoOfRows('File');
+
+TRACE **********************************************************;
+TRACE #files $(vNoOfFiles);
+TRACE **********************************************************;
+
+FOR i=0 to $(vNoOfFiles)-1;
+	LET vSourceFile = Peek('SourceFile',$(i),'File');
+    LET vTargetFile = Peek('TargetFile',$(i),'File');
+    CALL fSource2Target('$(vSourceFile)','$(vTargetFile)');
+NEXT i;
+
+DROP TABLE [File];
+TRACE **********************************************************;
+TRACE Completed fCopyQVDsWithPrefix sub execution.;
+TRACE **********************************************************;
+
+END SUB;
